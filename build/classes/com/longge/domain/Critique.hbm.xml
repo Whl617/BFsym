@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-6-3 21:36:27 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.longge.domain.Critique" >
+        <id name="id" type="int">
+            <generator class="increment" />
+        </id>
+        <property name="aid" type="int">
+        </property>
+        <property name="content" type="java.lang.String">
+        </property>
+        <property name="username" type="java.lang.String">
+        </property>
+    </class>
+</hibernate-mapping>

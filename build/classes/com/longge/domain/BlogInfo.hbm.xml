@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-5-30 13:49:20 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.longge.domain.BlogInfo" table="bloginfo">
+        <id name="username" type="java.lang.String">
+            <column name="username" />
+            <generator class="assigned" />
+        </id>
+        <property name="idiograph" type="java.lang.String">
+            <column name="idiograph" />
+        </property>
+        <property name="blogtitle" type="java.lang.String">
+            <column name="blogtitle" />
+        </property>
+    </class>
+</hibernate-mapping>

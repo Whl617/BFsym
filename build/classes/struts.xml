@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<package name="default" extends="struts-default">
+	 <interceptors>
+	    <interceptor name="userinterceptor" class="com.longge.interceptor.UserInterceptor"></interceptor>
+	 
+	 </interceptors>
+		<action name="register" class="registerAction">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/register.jsp</result>
+		</action>
+		<action name="login" class="loginAction">
+			<result name="success">/success.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="editBlogInfo" class="editbloginfoAction">
+			<result name="success" type="chain">getBlogInfo</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/user/editbloginfo.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+			<interceptor-ref name="userinterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="getBlogInfo" class="getbloginfoAction">
+			<result name="success">/user/editbloginfo.jsp</result>
+			<result name="error">/error.jsp</result>
+		</action>
+		<action name="article" class="articleAction">
+			<result name="success" type="chain">showuserall</result>
+			<result name="input">/user/addArticle.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+			<interceptor-ref name="userinterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="ckeditorUpload" class="ckeditorUploadAction">
+		</action>
+		<action name="findall" class="findallAction">
+		</action>
+		<action name="showuserall" class="showUserallAction">
+			<result name="success">/user/showUserAllArticle.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+		</action>
+		<action name="showall" class="showAllAction">
+			<result name="success">/showAllArticle.jsp</result>
+		</action>
+		<action name="showarticle" class="showArticleAction">
+			<result name="success">/user/showArticle.jsp</result>
+		</action>
+		<action name="addcritique" class="addCritiqueAction">
+			<result name="success" type="chain">showarticle</result>
+			<result name="input">/user/showArticle.jsp</result>
+		</action>
+		<action name="photoupload" class="com.longge.action.PhotoUploadAction">
+			<result name="success" type="chain">showphoto</result>
+			<result name="input">/user/showphoto.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+			<interceptor-ref name="userinterceptor"></interceptor-ref>
+			<interceptor-ref name="fileUpload">
+			   <param name="allowedTypes">image/bmp,image/jpeg,image/gif,image/png</param>
+			   <param name="maximumSize">512000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		<action name="showphoto" class="com.longge.action.ShowPhotoAction">
+			<result name="success" >/user/showphoto.jsp</result>
+			<result name="login" type="redirect">/login.jsp</result>
+			<interceptor-ref name="userinterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+	</package>
+</struts>

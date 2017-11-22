@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+    "-//Apache Struts//XWork Validator 1.0.3//EN"
+    "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+	<validator type="requiredstring">
+		<param name="fieldName">title</param>
+		<param name="trim">true</param>
+		<message>必须输入文章标题</message>
+	</validator>
+
+	<validator type="regex">
+		<param name="fieldName">title</param>
+		<param name="regexexpression"><![CDATA[([a-z,A-Z,0-9,\u4e00-\u9fa5]{2,20})]]></param>
+		<message>文章标题长度必须为2至20之间</message>
+	</validator>
+
+	<validator type="requiredstring">
+		<param name="fieldName">content</param>
+		<param name="trim">true</param>
+		<message>必须输入文章内容</message>
+	</validator>
+
+</validators>
+
+
+
+
+
+
+
+
+

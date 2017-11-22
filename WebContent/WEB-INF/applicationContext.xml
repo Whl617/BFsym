@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	<!-- 引入外部属性文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClass}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	<!-- hibernate -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/longge/domain/User.hbm.xml</value>
+				<value>com/longge/domain/BlogInfo.hbm.xml</value>
+				<value>com/longge/domain/Article.hbm.xml</value>
+				<value>com/longge/domain/Dianjiliang.hbm.xml</value>
+				<value>com/longge/domain/Critique.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 普通bean -->
+	<bean id="userDao" class="com.longge.dao.UserDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="userService" class="com.longge.service.UserServiceImpl">
+	   <property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="blogInfoDao" class="com.longge.dao.BlogInfoDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="blogInfoService" class="com.longge.service.BlogInfoServiceImpl">
+	   <property name="blogInfoDao" ref="blogInfoDao"></property>
+	</bean>
+	<bean id="articleDao" class="com.longge.dao.ArticleDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="articleService" class="com.longge.service.ArticleServiceImpl">
+	   <property name="articleDao" ref="articleDao"></property>
+	   <property name="critiqueDao" ref="critiqueDao"></property>
+	</bean>
+	<bean id="dianjiliangDao" class="com.longge.dao.DianjiliangDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="dianjiliangService" class="com.longge.service.DianjiliangServiceImpl">
+	   <property name="dianjiliangDao" ref="dianjiliangDao"></property>
+	</bean>
+	<bean id="critiqueDao" class="com.longge.dao.CritiqueDaoImpl">
+	   <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="critiqueService" class="com.longge.service.CritiqueServiceImpl">
+	   <property name="critiqueDao" ref="critiqueDao"></property>
+	</bean>
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 开启注解事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 配置Action -->
+	<bean id="registerAction" class="com.longge.action.RegisterAction" scope="prototype">
+	   <property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="loginAction" class="com.longge.action.LoginAction" scope="prototype">
+	   <property name="userService" ref="userService"></property>
+	   <property name="blogInfoService" ref="blogInfoService"></property>
+	</bean>
+	<bean id="editbloginfoAction" class="com.longge.action.EditBlogInfoAction" scope="prototype">
+	   <property name="blogInfoService" ref="blogInfoService"></property>
+	</bean>
+	<bean id="getbloginfoAction" class="com.longge.action.GetBlogInfoAction" scope="prototype">
+	   <property name="blogInfoService" ref="blogInfoService"></property>
+	</bean>
+	<bean id="articleAction" class="com.longge.action.ArticleAction" scope="prototype">
+	   <property name="articleService" ref="articleService"></property>
+	</bean>
+	<bean id="ckeditorUploadAction" class="com.longge.action.CkeditorUpload" scope="prototype">
+	</bean>
+	<!-- 服务器资源 -->
+	<bean id="findallAction" class="com.longge.action.FindAllAction" scope="prototype">
+	</bean>
+	<!-- UserALL文章 -->
+	<bean id="showUserallAction" class="com.longge.action.ShowUserAllArticleAction" scope="prototype">
+	<property name="articleService" ref="articleService"></property>
+	<property name="blogInfoService" ref="blogInfoService"></property>
+	</bean>
+	<!-- 所有文章action -->
+	<bean id="showAllAction" class="com.longge.action.ShowAllArticleAction" scope="prototype">
+	<property name="articleService" ref="articleService"></property>
+	</bean>
+	<bean id="showArticleAction" class="com.longge.action.ShowArticleAction" scope="prototype">
+	<property name="articleService" ref="articleService"></property>
+	<property name="dianjiliangService" ref="dianjiliangService"></property>
+	<property name="critiqueService" ref="critiqueService"></property>
+	<property name="blogInfoService" ref="blogInfoService"></property>
+	</bean>
+	<bean id="addCritiqueAction" class="com.longge.action.AddCritiqueAction" scope="prototype">
+	<property name="critiqueService" ref="critiqueService"></property>
+	</bean>
+</beans>
