@@ -10,7 +10,7 @@ import com.longge.service.CritiqueService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class AddCritiqueAction extends ActionSupport{
-
+   
 	private CritiqueService critiqueService;
     private int id;
     private String content;
